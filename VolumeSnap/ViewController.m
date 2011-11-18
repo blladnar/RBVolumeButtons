@@ -26,14 +26,24 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+   counter = 0;
+   
    RBVolumeButtons *buttonStealer = [[[RBVolumeButtons alloc] init] autorelease];
-   buttonStealer.upBlock = ^{ NSLog(@"Up Button");};
-   buttonStealer.downBlock = ^{ NSLog(@"Down Button");};
+   buttonStealer.upBlock = ^{ 
+      counter++;
+      [counterLabel setText:[NSString stringWithFormat:@"%i",counter]];
+   };
+   buttonStealer.downBlock = ^{ 
+      counter--;
+      [counterLabel setText:[NSString stringWithFormat:@"%i",counter]];
+   };
    
 }
 
 - (void)viewDidUnload
 {
+   [counterLabel release];
+   counterLabel = nil;
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
@@ -65,4 +75,8 @@
    return (interfaceOrientation != UIInterfaceOrientationPortraitUpsideDown);
 }
 
+- (void)dealloc {
+   [counterLabel release];
+   [super dealloc];
+}
 @end

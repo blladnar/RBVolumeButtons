@@ -11,7 +11,8 @@
 
 @interface ViewController : UIViewController
 {
-   MPVolumeView *volumeView;
    float launchVolume;
+   IBOutlet UILabel *counterLabel;
+   int counter;
 }
 @end
