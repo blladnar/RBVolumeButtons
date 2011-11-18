@@ -7,7 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <MediaPlayer/MediaPlayer.h>
 
 @interface ViewController : UIViewController
-
+{
+   MPVolumeView *volumeView;
+   float launchVolume;
+}
 @end

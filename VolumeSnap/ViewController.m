@@ -8,6 +8,11 @@
 
 #import "ViewController.h"
 
+#import <AudioToolbox/AudioToolbox.h>
+#import <MediaPlayer/MediaPlayer.h>
+
+#import "RBVolumeButtons.h"
+
 @implementation ViewController
 
 - (void)didReceiveMemoryWarning
@@ -21,7 +26,10 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view, typically from a nib.
+   RBVolumeButtons *buttonStealer = [[[RBVolumeButtons alloc] init] autorelease];
+   buttonStealer.upBlock = ^{ NSLog(@"Up Button");};
+   buttonStealer.downBlock = ^{ NSLog(@"Down Button");};
+   
 }
 
 - (void)viewDidUnload

@@ -15,6 +15,9 @@
 		70C2EB511475EF4F00751AE8 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 70C2EB501475EF4F00751AE8 /* AppDelegate.m */; };
 		70C2EB541475EF4F00751AE8 /* MainStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 70C2EB521475EF4F00751AE8 /* MainStoryboard.storyboard */; };
 		70C2EB571475EF4F00751AE8 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 70C2EB561475EF4F00751AE8 /* ViewController.m */; };
+		70C2EB601475F07400751AE8 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 70C2EB5F1475F07400751AE8 /* AudioToolbox.framework */; };
+		70C2EB621475FE4900751AE8 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 70C2EB611475FE4900751AE8 /* MediaPlayer.framework */; };
+		70C2EB6514760B5A00751AE8 /* RBVolumeButtons.m in Sources */ = {isa = PBXBuildFile; fileRef = 70C2EB6414760B5A00751AE8 /* RBVolumeButtons.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,15 +25,20 @@
 		70C2EB401475EF4F00751AE8 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		70C2EB421475EF4F00751AE8 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		70C2EB441475EF4F00751AE8 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
-		70C2EB481475EF4F00751AE8 /* VolumeSnap-Info.plist */ = {isa = PBXFileReference; path = "VolumeSnap-Info.plist"; sourceTree = "<group>"; };
+		70C2EB481475EF4F00751AE8 /* VolumeSnap-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "VolumeSnap-Info.plist"; sourceTree = "<group>"; };
 		70C2EB4A1475EF4F00751AE8 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		70C2EB4C1475EF4F00751AE8 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		70C2EB4E1475EF4F00751AE8 /* VolumeSnap-Prefix.pch */ = {isa = PBXFileReference; path = "VolumeSnap-Prefix.pch"; sourceTree = "<group>"; };
-		70C2EB4F1475EF4F00751AE8 /* AppDelegate.h */ = {isa = PBXFileReference; path = AppDelegate.h; sourceTree = "<group>"; };
+		70C2EB4E1475EF4F00751AE8 /* VolumeSnap-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "VolumeSnap-Prefix.pch"; sourceTree = "<group>"; };
+		70C2EB4F1475EF4F00751AE8 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		70C2EB501475EF4F00751AE8 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		70C2EB531475EF4F00751AE8 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard.storyboard; sourceTree = "<group>"; };
-		70C2EB551475EF4F00751AE8 /* ViewController.h */ = {isa = PBXFileReference; path = ViewController.h; sourceTree = "<group>"; };
+		70C2EB551475EF4F00751AE8 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
 		70C2EB561475EF4F00751AE8 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		70C2EB5D1475F03B00751AE8 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
+		70C2EB5F1475F07400751AE8 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		70C2EB611475FE4900751AE8 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
+		70C2EB6314760B5A00751AE8 /* RBVolumeButtons.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RBVolumeButtons.h; sourceTree = "<group>"; };
+		70C2EB6414760B5A00751AE8 /* RBVolumeButtons.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RBVolumeButtons.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -38,6 +46,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				70C2EB621475FE4900751AE8 /* MediaPlayer.framework in Frameworks */,
+				70C2EB601475F07400751AE8 /* AudioToolbox.framework in Frameworks */,
 				70C2EB411475EF4F00751AE8 /* UIKit.framework in Frameworks */,
 				70C2EB431475EF4F00751AE8 /* Foundation.framework in Frameworks */,
 				70C2EB451475EF4F00751AE8 /* CoreGraphics.framework in Frameworks */,
@@ -50,6 +60,9 @@
 		70C2EB311475EF4F00751AE8 = {
 			isa = PBXGroup;
 			children = (
+				70C2EB611475FE4900751AE8 /* MediaPlayer.framework */,
+				70C2EB5F1475F07400751AE8 /* AudioToolbox.framework */,
+				70C2EB5D1475F03B00751AE8 /* CoreAudio.framework */,
 				70C2EB461475EF4F00751AE8 /* VolumeSnap */,
 				70C2EB3F1475EF4F00751AE8 /* Frameworks */,
 				70C2EB3D1475EF4F00751AE8 /* Products */,
@@ -83,6 +96,8 @@
 				70C2EB551475EF4F00751AE8 /* ViewController.h */,
 				70C2EB561475EF4F00751AE8 /* ViewController.m */,
 				70C2EB471475EF4F00751AE8 /* Supporting Files */,
+				70C2EB6314760B5A00751AE8 /* RBVolumeButtons.h */,
+				70C2EB6414760B5A00751AE8 /* RBVolumeButtons.m */,
 			);
 			path = VolumeSnap;
 			sourceTree = "<group>";
@@ -163,6 +178,7 @@
 				70C2EB4D1475EF4F00751AE8 /* main.m in Sources */,
 				70C2EB511475EF4F00751AE8 /* AppDelegate.m in Sources */,
 				70C2EB571475EF4F00751AE8 /* ViewController.m in Sources */,
+				70C2EB6514760B5A00751AE8 /* RBVolumeButtons.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
