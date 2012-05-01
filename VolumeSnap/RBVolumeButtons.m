@@ -14,8 +14,6 @@
 -(void)initializeVolumeButtonStealer;
 -(void)volumeDown;
 -(void)volumeUp;
--(void)applicationCameBack;
--(void)applicationWentAway;
 @end
 
 @implementation RBVolumeButtons
@@ -116,24 +114,22 @@ void volumeListenerCallback (
       
       
       [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationWillResignActiveNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification* notification){
-         [self applicationWentAway];
+         [self stopStealingVolumeButtonEvents];
       }];
       
       
       [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationDidBecomeActiveNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notification){
          if( ! justEnteredForeground )
          {
-            [self applicationCameBack];
+            [self startStealingVolumeButtonEvents];
          }
          justEnteredForeground = NO;
       }];
       
       
       [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationWillEnterForegroundNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notification){
-         AudioSessionInitialize(NULL, NULL, NULL, NULL);
-         AudioSessionSetActive(YES);
          justEnteredForeground = YES;
-         [self applicationCameBack];
+         [self startStealingVolumeButtonEvents];
          
          
       }];
@@ -142,8 +138,10 @@ void volumeListenerCallback (
    return self;
 }
 
--(void)applicationCameBack
+-(void)startStealingVolumeButtonEvents
 {
+   AudioSessionInitialize(NULL, NULL, NULL, NULL);
+   AudioSessionSetActive(YES);
    [self initializeVolumeButtonStealer];
    launchVolume = [[MPMusicPlayerController applicationMusicPlayer] volume];
    hadToLowerVolume = launchVolume == 1.0;
@@ -161,7 +159,7 @@ void volumeListenerCallback (
    }
 }
 
--(void)applicationWentAway
+-(void)stopStealingVolumeButtonEvents
 {
    AudioSessionRemovePropertyListenerWithUserData(kAudioSessionProperty_CurrentHardwareOutputVolume, volumeListenerCallback, self);
    
@@ -174,6 +172,7 @@ void volumeListenerCallback (
    {
       [[MPMusicPlayerController applicationMusicPlayer] setVolume:0.0];
    }
+   AudioSessionSetActive(NO);
 }
 
 -(void)dealloc
