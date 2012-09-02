@@ -150,8 +150,6 @@ void volumeListenerCallback (
    
    
    [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationWillEnterForegroundNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notification){
-      AudioSessionInitialize(NULL, NULL, NULL, NULL);
-      AudioSessionSetActive(YES);
       volumeStealer.justEnteredForeground = YES;
       [volumeStealer startStealingVolumeButtonEvents];
    }];
