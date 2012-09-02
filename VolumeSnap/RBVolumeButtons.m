@@ -14,10 +14,12 @@
 -(void)initializeVolumeButtonStealer;
 -(void)volumeDown;
 -(void)volumeUp;
--(void)applicationCameBack;
--(void)applicationWentAway;
+-(void)startStealingVolumeButtonEvents;
+-(void)stopStealingVolumeButtonEvents;
 
 @property BOOL justEnteredForeground;
+@property BOOL isStealingVolumeButtons;
+@property UIView *volumeView;
 
 @end
 
@@ -26,7 +28,8 @@
 @synthesize upBlock;
 @synthesize downBlock;
 @synthesize launchVolume;
-
+@synthesize isStealingVolumeButtons = _isStealingVolumeButtons;
+@synthesize volumeView = _volumeView;
 @synthesize justEnteredForeground;
 
 void volumeListenerCallback (
@@ -92,67 +95,20 @@ void volumeListenerCallback (
    self = [super init];
    if( self )
    {
-      AudioSessionInitialize(NULL, NULL, NULL, NULL);
-      AudioSessionSetActive(YES);
-      
-      launchVolume = [[MPMusicPlayerController applicationMusicPlayer] volume];
-      hadToLowerVolume = launchVolume == 1.0;
-      hadToRaiseVolume = launchVolume == 0.0;
-      justEnteredForeground = NO;
-      if( hadToLowerVolume )
-      {
-         [[MPMusicPlayerController applicationMusicPlayer] setVolume:0.95];
-         launchVolume = 0.95;
-         
-      }
-      
-      if( hadToRaiseVolume )
-      {
-         [[MPMusicPlayerController applicationMusicPlayer] setVolume:0.05];
-         launchVolume = 0.05;
-      }
-      
-      CGRect frame = CGRectMake(0, -100, 10, 0);
-      MPVolumeView *volumeView = [[[MPVolumeView alloc] initWithFrame:frame] autorelease];
-      [volumeView sizeToFit];
-      [[[[UIApplication sharedApplication] windows] objectAtIndex:0] addSubview:volumeView];
-      
-      [self initializeVolumeButtonStealer];
-      
-      __block RBVolumeButtons *volumeStealer = self;
-      [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationWillResignActiveNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification* notification){
-         [volumeStealer applicationWentAway];
-      }];
-      
-      
-      [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationDidBecomeActiveNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notification){
-         if( ! volumeStealer.justEnteredForeground )
-         {
-            [volumeStealer applicationCameBack];
-         }
-         volumeStealer.justEnteredForeground = NO;
-      }];
-      
-      
-      [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationWillEnterForegroundNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notification){
-         AudioSessionInitialize(NULL, NULL, NULL, NULL);
-         AudioSessionSetActive(YES);
-         volumeStealer.justEnteredForeground = YES;
-         [volumeStealer applicationCameBack];
-         
-         
-      }];
-      
+      self.isStealingVolumeButtons = NO;
    }
    return self;
 }
 
--(void)applicationCameBack
+-(void)startStealingVolumeButtonEvents
 {
-   [self initializeVolumeButtonStealer];
+   AudioSessionInitialize(NULL, NULL, NULL, NULL);
+   AudioSessionSetActive(YES);
+   
    launchVolume = [[MPMusicPlayerController applicationMusicPlayer] volume];
    hadToLowerVolume = launchVolume == 1.0;
    hadToRaiseVolume = launchVolume == 0.0;
+   justEnteredForeground = NO;
    if( hadToLowerVolume )
    {
       [[MPMusicPlayerController applicationMusicPlayer] setVolume:0.95];
@@ -161,13 +117,51 @@ void volumeListenerCallback (
    
    if( hadToRaiseVolume )
    {
-      [[MPMusicPlayerController applicationMusicPlayer] setVolume:0.1];
-      launchVolume = 0.1;
+      [[MPMusicPlayerController applicationMusicPlayer] setVolume:0.05];
+      launchVolume = 0.05;
    }
+   
+   CGRect frame = CGRectMake(0, -100, 10, 0);
+   self.volumeView = [[[MPVolumeView alloc] initWithFrame:frame] autorelease];
+   [self.volumeView sizeToFit];
+   [[[[UIApplication sharedApplication] windows] objectAtIndex:0] addSubview:self.volumeView];
+   
+   [self initializeVolumeButtonStealer];
+   
+   __block RBVolumeButtons *volumeStealer = self;
+   [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationWillResignActiveNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification* notification){
+      [volumeStealer stopStealingVolumeButtonEvents];
+   }];
+   
+   
+   [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationDidBecomeActiveNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notification){
+      if( ! volumeStealer.justEnteredForeground )
+      {
+         [volumeStealer startStealingVolumeButtonEvents];
+      }
+      volumeStealer.justEnteredForeground = NO;
+   }];
+   
+   
+   [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationWillEnterForegroundNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notification){
+      AudioSessionInitialize(NULL, NULL, NULL, NULL);
+      AudioSessionSetActive(YES);
+      volumeStealer.justEnteredForeground = YES;
+      [volumeStealer startStealingVolumeButtonEvents];
+   }];
+   
+   self.isStealingVolumeButtons = YES;
 }
 
--(void)applicationWentAway
+-(void)stopStealingVolumeButtonEvents
 {
+   if(!self.isStealingVolumeButtons)
+   {
+      return;
+   }
+   
+   [[NSNotificationCenter defaultCenter] removeObserver:self];
+   
    AudioSessionRemovePropertyListenerWithUserData(kAudioSessionProperty_CurrentHardwareOutputVolume, volumeListenerCallback, self);
    
    if( hadToLowerVolume )
@@ -179,21 +173,17 @@ void volumeListenerCallback (
    {
       [[MPMusicPlayerController applicationMusicPlayer] setVolume:0.0];
    }
+   
+   [self.volumeView removeFromSuperview];
+   self.volumeView = nil;
+   
+   self.isStealingVolumeButtons = NO;
 }
 
 -(void)dealloc
 {
-   if( hadToLowerVolume )
-   {
-      [[MPMusicPlayerController applicationMusicPlayer] setVolume:1.0];
-   }
+   [self stopStealingVolumeButtonEvents];
    
-   if( hadToRaiseVolume )
-   {
-      [[MPMusicPlayerController applicationMusicPlayer] setVolume:0.0];
-   }
-   
-   [[NSNotificationCenter defaultCenter] removeObserver:self];
    [super dealloc];
 }
 

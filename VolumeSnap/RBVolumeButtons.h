@@ -16,10 +16,16 @@ typedef void (^ButtonBlock)();
    BOOL hadToLowerVolume;
    BOOL hadToRaiseVolume;
    BOOL justEnteredForeground;
+   
+   BOOL _isStealingVolumeButtons;
+   UIView *_volumeView;
 }
 
 @property (nonatomic, copy) ButtonBlock upBlock;
 @property (nonatomic, copy) ButtonBlock downBlock;
 @property (readonly) float launchVolume;
+
+-(void)startStealingVolumeButtonEvents;
+-(void)stopStealingVolumeButtonEvents;
 
 @end
