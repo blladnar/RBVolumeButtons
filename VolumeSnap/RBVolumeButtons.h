@@ -15,7 +15,6 @@ typedef void (^ButtonBlock)();
    float launchVolume;
    BOOL hadToLowerVolume;
    BOOL hadToRaiseVolume;
-   BOOL justEnteredForeground;
    
    BOOL _isStealingVolumeButtons;
    BOOL _stoppedStealingBecauseOfBackground;

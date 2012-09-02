@@ -17,7 +17,6 @@
 -(void)startStealingVolumeButtonEvents;
 -(void)stopStealingVolumeButtonEvents;
 
-@property BOOL justEnteredForeground;
 @property BOOL isStealingVolumeButtons;
 @property BOOL stoppedStealingBecauseOfBackground;
 @property (retain) UIView *volumeView;
@@ -32,7 +31,6 @@
 @synthesize isStealingVolumeButtons = _isStealingVolumeButtons;
 @synthesize stoppedStealingBecauseOfBackground = _stoppedStealingBecauseOfBackground;
 @synthesize volumeView = _volumeView;
-@synthesize justEnteredForeground;
 
 void volumeListenerCallback (
                              void                      *inClientData,
@@ -117,7 +115,6 @@ void volumeListenerCallback (
    launchVolume = [[MPMusicPlayerController applicationMusicPlayer] volume];
    hadToLowerVolume = launchVolume == 1.0;
    hadToRaiseVolume = launchVolume == 0.0;
-   justEnteredForeground = NO;
    if( hadToLowerVolume )
    {
       [[MPMusicPlayerController applicationMusicPlayer] setVolume:0.95];
@@ -149,17 +146,15 @@ void volumeListenerCallback (
    
    
    [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationDidBecomeActiveNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notification){
-      if( ! volumeStealer.justEnteredForeground && volumeStealer.stoppedStealingBecauseOfBackground == YES)
+      if(volumeStealer.stoppedStealingBecauseOfBackground)
       {
          [volumeStealer startStealingVolumeButtonEvents];
+         volumeStealer.stoppedStealingBecauseOfBackground = NO;
       }
-      volumeStealer.justEnteredForeground = NO;
-      volumeStealer.stoppedStealingBecauseOfBackground = NO;
    }];
    
    
    [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationWillEnterForegroundNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notification){
-      volumeStealer.justEnteredForeground = YES;
       if(volumeStealer.stoppedStealingBecauseOfBackground)
       {
          [volumeStealer startStealingVolumeButtonEvents];
