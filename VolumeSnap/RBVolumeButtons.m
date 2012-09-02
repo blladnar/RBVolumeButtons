@@ -183,7 +183,8 @@ void volumeListenerCallback (
 -(void)dealloc
 {
    [self stopStealingVolumeButtonEvents];
-   
+   self.upBlock = nil;
+   self.downBlock = nil;
    [super dealloc];
 }
 
