@@ -81,4 +81,14 @@
    [counterLabel release];
    [super dealloc];
 }
+
+- (IBAction)startStealing:(id)sender
+{
+   [self.buttonStealer startStealingVolumeButtonEvents];
+}
+
+- (IBAction)stopStealing:(id)sender
+{
+   [self.buttonStealer stopStealingVolumeButtonEvents];
+}
 @end

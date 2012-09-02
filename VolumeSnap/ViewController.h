@@ -21,5 +21,7 @@
 }
 
 @property (retain) RBVolumeButtons *buttonStealer;
+- (IBAction)startStealing:(id)sender;
+- (IBAction)stopStealing:(id)sender;
 
 @end
