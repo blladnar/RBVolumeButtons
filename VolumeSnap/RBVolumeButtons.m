@@ -102,6 +102,8 @@ void volumeListenerCallback (
 
 -(void)startStealingVolumeButtonEvents
 {
+   NSAssert([[NSThread currentThread] isMainThread], @"This must be called from the main thread");
+   
    if(self.isStealingVolumeButtons) {
       return;
    }
@@ -159,6 +161,8 @@ void volumeListenerCallback (
 
 -(void)stopStealingVolumeButtonEvents
 {
+   NSAssert([[NSThread currentThread] isMainThread], @"This must be called from the main thread");
+   
    if(!self.isStealingVolumeButtons)
    {
       return;
