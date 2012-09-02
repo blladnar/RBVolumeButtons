@@ -166,6 +166,8 @@ void volumeListenerCallback (
       return;
    }
    
+   AudioSessionSetActive(NO);
+   
    [[NSNotificationCenter defaultCenter] removeObserver:self];
    
    AudioSessionRemovePropertyListenerWithUserData(kAudioSessionProperty_CurrentHardwareOutputVolume, volumeListenerCallback, self);
