@@ -19,7 +19,7 @@
 
 @property BOOL justEnteredForeground;
 @property BOOL isStealingVolumeButtons;
-@property UIView *volumeView;
+@property (retain) UIView *volumeView;
 
 @end
 
