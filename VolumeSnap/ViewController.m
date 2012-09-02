@@ -15,48 +15,50 @@
 
 @implementation ViewController
 
+@synthesize buttonStealer = _buttonStealer;
+
 - (void)didReceiveMemoryWarning
 {
-    [super didReceiveMemoryWarning];
-    // Release any cached data, images, etc that aren't in use.
+   [super didReceiveMemoryWarning];
+   // Release any cached data, images, etc that aren't in use.
 }
 
 #pragma mark - View lifecycle
 
 - (void)viewDidLoad
 {
-    [super viewDidLoad];
+   [super viewDidLoad];
    counter = 0;
    
-   RBVolumeButtons *buttonStealer = [[[RBVolumeButtons alloc] init] autorelease];
-   buttonStealer.upBlock = ^{ 
+   self.buttonStealer = [[[RBVolumeButtons alloc] init] autorelease];
+   self.buttonStealer.upBlock = ^{
       counter++;
       [counterLabel setText:[NSString stringWithFormat:@"%i",counter]];
    };
-   buttonStealer.downBlock = ^{ 
+   self.buttonStealer.downBlock = ^{
       counter--;
       [counterLabel setText:[NSString stringWithFormat:@"%i",counter]];
    };
-   
 }
 
 - (void)viewDidUnload
 {
    [counterLabel release];
    counterLabel = nil;
-    [super viewDidUnload];
-    // Release any retained subviews of the main view.
-    // e.g. self.myOutlet = nil;
+   self.buttonStealer = nil;
+   [super viewDidUnload];
+   // Release any retained subviews of the main view.
+   // e.g. self.myOutlet = nil;
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    [super viewWillAppear:animated];
+   [super viewWillAppear:animated];
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
-    [super viewDidAppear:animated];
+   [super viewDidAppear:animated];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -71,7 +73,7 @@
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
-    // Return YES for supported orientations
+   // Return YES for supported orientations
    return (interfaceOrientation != UIInterfaceOrientationPortraitUpsideDown);
 }
 

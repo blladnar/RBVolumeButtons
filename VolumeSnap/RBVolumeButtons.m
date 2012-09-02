@@ -16,6 +16,9 @@
 -(void)volumeUp;
 -(void)applicationCameBack;
 -(void)applicationWentAway;
+
+@property BOOL justEnteredForeground;
+
 @end
 
 @implementation RBVolumeButtons
@@ -114,26 +117,26 @@ void volumeListenerCallback (
       
       [self initializeVolumeButtonStealer];
       
-      
+      __block RBVolumeButtons *volumeStealer = self;
       [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationWillResignActiveNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification* notification){
-         [self applicationWentAway];
+         [volumeStealer applicationWentAway];
       }];
       
       
       [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationDidBecomeActiveNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notification){
-         if( ! justEnteredForeground )
+         if( ! volumeStealer.justEnteredForeground )
          {
-            [self applicationCameBack];
+            [volumeStealer applicationCameBack];
          }
-         justEnteredForeground = NO;
+         volumeStealer.justEnteredForeground = NO;
       }];
       
       
       [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationWillEnterForegroundNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notification){
          AudioSessionInitialize(NULL, NULL, NULL, NULL);
          AudioSessionSetActive(YES);
-         justEnteredForeground = YES;
-         [self applicationCameBack];
+         volumeStealer.justEnteredForeground = YES;
+         [volumeStealer applicationCameBack];
          
          
       }];
@@ -187,6 +190,8 @@ void volumeListenerCallback (
    {
       [[MPMusicPlayerController applicationMusicPlayer] setVolume:0.0];
    }
+   
+   [[NSNotificationCenter defaultCenter] removeObserver:self];
    [super dealloc];
 }
 
