@@ -19,6 +19,7 @@
 
 @property BOOL justEnteredForeground;
 @property BOOL isStealingVolumeButtons;
+@property BOOL stoppedStealingBecauseOfBackground;
 @property (retain) UIView *volumeView;
 
 @end
@@ -29,6 +30,7 @@
 @synthesize downBlock;
 @synthesize launchVolume;
 @synthesize isStealingVolumeButtons = _isStealingVolumeButtons;
+@synthesize stoppedStealingBecauseOfBackground = _stoppedStealingBecauseOfBackground;
 @synthesize volumeView = _volumeView;
 @synthesize justEnteredForeground;
 
@@ -96,6 +98,7 @@ void volumeListenerCallback (
    if( self )
    {
       self.isStealingVolumeButtons = NO;
+      self.stoppedStealingBecauseOfBackground = NO;
    }
    return self;
 }
@@ -136,22 +139,32 @@ void volumeListenerCallback (
    
    __block RBVolumeButtons *volumeStealer = self;
    [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationWillResignActiveNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification* notification){
-      [volumeStealer stopStealingVolumeButtonEvents];
+      if(volumeStealer.isStealingVolumeButtons)
+      {
+         [volumeStealer stopStealingVolumeButtonEvents];
+         volumeStealer.stoppedStealingBecauseOfBackground = YES;
+      }
+      
    }];
    
    
    [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationDidBecomeActiveNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notification){
-      if( ! volumeStealer.justEnteredForeground )
+      if( ! volumeStealer.justEnteredForeground && volumeStealer.stoppedStealingBecauseOfBackground == YES)
       {
          [volumeStealer startStealingVolumeButtonEvents];
       }
       volumeStealer.justEnteredForeground = NO;
+      volumeStealer.stoppedStealingBecauseOfBackground = NO;
    }];
    
    
    [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationWillEnterForegroundNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notification){
       volumeStealer.justEnteredForeground = YES;
-      [volumeStealer startStealingVolumeButtonEvents];
+      if(volumeStealer.stoppedStealingBecauseOfBackground)
+      {
+         [volumeStealer startStealingVolumeButtonEvents];
+         volumeStealer.stoppedStealingBecauseOfBackground = NO;
+      }
    }];
    
    self.isStealingVolumeButtons = YES;
@@ -165,8 +178,6 @@ void volumeListenerCallback (
    {
       return;
    }
-   
-   AudioSessionSetActive(NO);
    
    [[NSNotificationCenter defaultCenter] removeObserver:self];
    
@@ -184,6 +195,8 @@ void volumeListenerCallback (
    
    [self.volumeView removeFromSuperview];
    self.volumeView = nil;
+   
+   AudioSessionSetActive(NO);
    
    self.isStealingVolumeButtons = NO;
 }
