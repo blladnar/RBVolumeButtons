@@ -27,6 +27,8 @@
 @synthesize downBlock;
 @synthesize launchVolume;
 
+@synthesize justEnteredForeground;
+
 void volumeListenerCallback (
                              void                      *inClientData,
                              AudioSessionPropertyID    inID,
