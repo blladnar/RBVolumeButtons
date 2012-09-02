@@ -102,6 +102,10 @@ void volumeListenerCallback (
 
 -(void)startStealingVolumeButtonEvents
 {
+   if(self.isStealingVolumeButtons) {
+      return;
+   }
+   
    AudioSessionInitialize(NULL, NULL, NULL, NULL);
    AudioSessionSetActive(YES);
    
