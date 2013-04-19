@@ -115,17 +115,24 @@ void volumeListenerCallback (
    launchVolume = [[MPMusicPlayerController applicationMusicPlayer] volume];
    hadToLowerVolume = launchVolume == 1.0;
    hadToRaiseVolume = launchVolume == 0.0;
-   if( hadToLowerVolume )
-   {
-      [[MPMusicPlayerController applicationMusicPlayer] setVolume:0.95];
-      launchVolume = 0.95;
-   }
-   
-   if( hadToRaiseVolume )
-   {
-      [[MPMusicPlayerController applicationMusicPlayer] setVolume:0.05];
-      launchVolume = 0.05;
-   }
+
+    // Avoid flashing the volume indicator
+    if (hadToLowerVolume || hadToRaiseVolume)
+    {
+        dispatch_async(dispatch_get_current_queue(), ^{
+            if( hadToLowerVolume )
+            {
+                [[MPMusicPlayerController applicationMusicPlayer] setVolume:0.95];
+                launchVolume = 0.95;
+            }
+            
+            if( hadToRaiseVolume )
+            {
+                [[MPMusicPlayerController applicationMusicPlayer] setVolume:0.05];
+                launchVolume = 0.05;
+            }
+        });
+    }
    
    CGRect frame = CGRectMake(0, -100, 10, 0);
    self.volumeView = [[[MPVolumeView alloc] initWithFrame:frame] autorelease];
