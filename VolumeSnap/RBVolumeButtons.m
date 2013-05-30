@@ -19,7 +19,7 @@
 
 @property BOOL isStealingVolumeButtons;
 @property BOOL suspended;
-@property (retain) UIView *volumeView;
+@property (strong) UIView *volumeView;
 
 @end
 
@@ -48,20 +48,20 @@ void volumeListenerCallback (
    float volume = *volumePointer;
 
    
-   if( volume > [(RBVolumeButtons*)inClientData launchVolume] )
+   if( volume > [(__bridge RBVolumeButtons*)inClientData launchVolume] )
    {
-      [(RBVolumeButtons*)inClientData volumeUp];
+      [(__bridge RBVolumeButtons*)inClientData volumeUp];
    }
-   else if( volume < [(RBVolumeButtons*)inClientData launchVolume] )
+   else if( volume < [(__bridge RBVolumeButtons*)inClientData launchVolume] )
    {
-      [(RBVolumeButtons*)inClientData volumeDown];
+      [(__bridge RBVolumeButtons*)inClientData volumeDown];
    }
 
 }
 
 -(void)volumeDown
 {
-   AudioSessionRemovePropertyListenerWithUserData(kAudioSessionProperty_CurrentHardwareOutputVolume, volumeListenerCallback, self);
+   AudioSessionRemovePropertyListenerWithUserData(kAudioSessionProperty_CurrentHardwareOutputVolume, volumeListenerCallback, (__bridge void *)(self));
    
    [[MPMusicPlayerController applicationMusicPlayer] setVolume:launchVolume];
    
@@ -76,7 +76,7 @@ void volumeListenerCallback (
 
 -(void)volumeUp
 {
-   AudioSessionRemovePropertyListenerWithUserData(kAudioSessionProperty_CurrentHardwareOutputVolume, volumeListenerCallback, self);
+   AudioSessionRemovePropertyListenerWithUserData(kAudioSessionProperty_CurrentHardwareOutputVolume, volumeListenerCallback, (__bridge void *)(self));
    
    [[MPMusicPlayerController applicationMusicPlayer] setVolume:launchVolume];
    
@@ -137,7 +137,7 @@ void volumeListenerCallback (
     }
    
    CGRect frame = CGRectMake(0, -100, 10, 0);
-   self.volumeView = [[[MPVolumeView alloc] initWithFrame:frame] autorelease];
+   self.volumeView = [[MPVolumeView alloc] initWithFrame:frame];
    [self.volumeView sizeToFit];
    [[[[UIApplication sharedApplication] windows] objectAtIndex:0] addSubview:self.volumeView];
    
@@ -192,7 +192,7 @@ void volumeListenerCallback (
         [[NSNotificationCenter defaultCenter] removeObserver:self];
     }
    
-   AudioSessionRemovePropertyListenerWithUserData(kAudioSessionProperty_CurrentHardwareOutputVolume, volumeListenerCallback, self);
+   AudioSessionRemovePropertyListenerWithUserData(kAudioSessionProperty_CurrentHardwareOutputVolume, volumeListenerCallback, (__bridge void *)(self));
    
    if( hadToLowerVolume )
    {
@@ -217,14 +217,11 @@ void volumeListenerCallback (
     self.suspended = NO;
    [self stopStealingVolumeButtonEvents];
     
-   self.upBlock = nil;
-   self.downBlock = nil;
-   [super dealloc];
 }
 
 -(void)initializeVolumeButtonStealer
 {
-   AudioSessionAddPropertyListener(kAudioSessionProperty_CurrentHardwareOutputVolume, volumeListenerCallback, self);
+   AudioSessionAddPropertyListener(kAudioSessionProperty_CurrentHardwareOutputVolume, volumeListenerCallback, (__bridge void *)(self));
 }
 
 @end
