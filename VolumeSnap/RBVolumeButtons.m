@@ -109,6 +109,14 @@ void volumeListenerCallback (
     self.isStealingVolumeButtons = YES;
 	
 	AudioSessionInitialize(NULL, NULL, NULL, NULL);
+
+	UInt32 sessionCategory = kAudioSessionCategory_AmbientSound;
+	AudioSessionSetProperty (
+							 kAudioSessionProperty_AudioCategory,
+							 sizeof (sessionCategory),
+							 &sessionCategory
+							 );
+	
 	AudioSessionSetActive(YES);
 	
 	self.launchVolume = [[MPMusicPlayerController applicationMusicPlayer] volume];
