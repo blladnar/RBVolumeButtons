@@ -121,7 +121,7 @@ void volumeListenerCallback (
 	
 	CGRect frame = CGRectMake(0, -10, 1, 1);
 	self.volumeView = [[MPVolumeView alloc] initWithFrame:frame];
-	[[[[UIApplication sharedApplication] windows] objectAtIndex:0] addSubview:self.volumeView];
+	[[[[UIApplication sharedApplication] windows] objectAtIndex:0] insertSubview:self.volumeView atIndex:0];
 	
 	self.launchVolume = [[MPMusicPlayerController applicationMusicPlayer] volume];
 	BOOL hadToLowerVolume = self.launchVolume == 1.0;
