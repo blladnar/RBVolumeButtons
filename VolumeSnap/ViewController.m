@@ -47,11 +47,11 @@
     __weak typeof(self) weakSelf = self;
     self.buttonStealer.upBlock = ^{
         weakSelf.counter++;
-        [weakSelf.counterLabel setText:[NSString stringWithFormat:@"%i", weakSelf.counter]];
+        [weakSelf.counterLabel setText:[NSString stringWithFormat:@"%@", @(weakSelf.counter)]];
     };
     self.buttonStealer.downBlock = ^{
         weakSelf.counter--;
-        [weakSelf.counterLabel setText:[NSString stringWithFormat:@"%i", weakSelf.counter]];
+        [weakSelf.counterLabel setText:[NSString stringWithFormat:@"%@", @(weakSelf.counter)]];
     };
 }
 
