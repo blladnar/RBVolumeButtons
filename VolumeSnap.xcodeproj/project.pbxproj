@@ -62,9 +62,6 @@
 		70C2EB311475EF4F00751AE8 = {
 			isa = PBXGroup;
 			children = (
-				70C2EB611475FE4900751AE8 /* MediaPlayer.framework */,
-				70C2EB5F1475F07400751AE8 /* AudioToolbox.framework */,
-				70C2EB5D1475F03B00751AE8 /* CoreAudio.framework */,
 				70C2EB461475EF4F00751AE8 /* VolumeSnap */,
 				70C2EB3F1475EF4F00751AE8 /* Frameworks */,
 				70C2EB3D1475EF4F00751AE8 /* Products */,
@@ -82,6 +79,9 @@
 		70C2EB3F1475EF4F00751AE8 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				70C2EB5F1475F07400751AE8 /* AudioToolbox.framework */,
+				70C2EB611475FE4900751AE8 /* MediaPlayer.framework */,
+				70C2EB5D1475F03B00751AE8 /* CoreAudio.framework */,
 				70C2EB401475EF4F00751AE8 /* UIKit.framework */,
 				70C2EB421475EF4F00751AE8 /* Foundation.framework */,
 				70C2EB441475EF4F00751AE8 /* CoreGraphics.framework */,
@@ -264,6 +264,7 @@
 		70C2EB5B1475EF4F00751AE8 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_OBJC_ARC = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "VolumeSnap/VolumeSnap-Prefix.pch";
 				INFOPLIST_FILE = "VolumeSnap/VolumeSnap-Info.plist";
@@ -275,6 +276,7 @@
 		70C2EB5C1475EF4F00751AE8 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_OBJC_ARC = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "VolumeSnap/VolumeSnap-Prefix.pch";
 				INFOPLIST_FILE = "VolumeSnap/VolumeSnap-Info.plist";
