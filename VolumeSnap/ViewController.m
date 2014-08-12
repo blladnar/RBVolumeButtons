@@ -13,52 +13,66 @@
 
 #import "RBVolumeButtons.h"
 
+@interface ViewController ()
+
+@property (nonatomic, weak) IBOutlet UILabel *counterLabel;
+@property (weak, nonatomic) IBOutlet UIButton *changeStealingButton;
+@property (nonatomic, assign) NSUInteger counter;
+@property (nonatomic, assign, getter = isStealing) BOOL stealing;
+
+@end
+
 @implementation ViewController
 
 @synthesize buttonStealer = _buttonStealer;
+@synthesize counterLabel = counterLabel;
+@synthesize counter = counter;
 
 - (void)didReceiveMemoryWarning
 {
-   [super didReceiveMemoryWarning];
-   // Release any cached data, images, etc that aren't in use.
+    [super didReceiveMemoryWarning];
+    // Release any cached data, images, etc that aren't in use.
 }
 
 #pragma mark - View lifecycle
 
 - (void)viewDidLoad
 {
-   [super viewDidLoad];
-   counter = 0;
-   
-   self.buttonStealer = [[[RBVolumeButtons alloc] init] autorelease];
-   self.buttonStealer.upBlock = ^{
-      counter++;
-      [counterLabel setText:[NSString stringWithFormat:@"%i",counter]];
-   };
-   self.buttonStealer.downBlock = ^{
-      counter--;
-      [counterLabel setText:[NSString stringWithFormat:@"%i",counter]];
-   };
+    [super viewDidLoad];
+    [self.changeStealingButton setTitle:NSLocalizedString(@"Start stealing", nil) forState:UIControlStateNormal];
+    
+    counter = 0;
+
+    self.buttonStealer = [[RBVolumeButtons alloc] init];
+    __weak typeof(self) weakSelf = self;
+    self.buttonStealer.upBlock = ^{
+        weakSelf.counter++;
+        [weakSelf.counterLabel setText:[NSString stringWithFormat:@"%@", @(weakSelf.counter)]];
+    };
+    self.buttonStealer.downBlock = ^{
+        weakSelf.counter--;
+        [weakSelf.counterLabel setText:[NSString stringWithFormat:@"%@", @(weakSelf.counter)]];
+    };
 }
 
 - (void)viewDidUnload
 {
-   [counterLabel release];
-   counterLabel = nil;
-   self.buttonStealer = nil;
-   [super viewDidUnload];
-   // Release any retained subviews of the main view.
-   // e.g. self.myOutlet = nil;
+    counterLabel = nil;
+    self.buttonStealer = nil;
+    [self setChangeStealingButton:nil];
+    [super viewDidUnload];
+    // Release any retained subviews of the main view.
+    // e.g. self.myOutlet = nil;
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
-   [super viewWillAppear:animated];
+    [super viewWillAppear:animated];
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
-   [super viewDidAppear:animated];
+    [super viewDidAppear:animated];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -73,22 +87,25 @@
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
-   // Return YES for supported orientations
-   return (interfaceOrientation != UIInterfaceOrientationPortraitUpsideDown);
+    // Return YES for supported orientations
+    return (interfaceOrientation != UIInterfaceOrientationPortraitUpsideDown);
 }
 
-- (void)dealloc {
-   [counterLabel release];
-   [super dealloc];
-}
 
-- (IBAction)startStealing:(id)sender
+- (IBAction)changeStealing:(id)sender
 {
-   [self.buttonStealer startStealingVolumeButtonEvents];
+    if ([self isStealing])
+    {
+        [self.buttonStealer stopStealingVolumeButtonEvents];
+        [self.changeStealingButton setTitle:NSLocalizedString(@"Start stealing", nil) forState:UIControlStateNormal];
+    }
+    else
+    {
+        [self.buttonStealer startStealingVolumeButtonEvents];
+        [self.changeStealingButton setTitle:NSLocalizedString(@"Stop stealing", nil) forState:UIControlStateNormal];
+    }
+
+    self.stealing = !self.stealing;
 }
 
-- (IBAction)stopStealing:(id)sender
-{
-   [self.buttonStealer stopStealingVolumeButtonEvents];
-}
 @end

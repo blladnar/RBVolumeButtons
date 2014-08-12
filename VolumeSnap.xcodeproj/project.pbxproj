@@ -62,9 +62,6 @@
 		70C2EB311475EF4F00751AE8 = {
 			isa = PBXGroup;
 			children = (
-				70C2EB611475FE4900751AE8 /* MediaPlayer.framework */,
-				70C2EB5F1475F07400751AE8 /* AudioToolbox.framework */,
-				70C2EB5D1475F03B00751AE8 /* CoreAudio.framework */,
 				70C2EB461475EF4F00751AE8 /* VolumeSnap */,
 				70C2EB3F1475EF4F00751AE8 /* Frameworks */,
 				70C2EB3D1475EF4F00751AE8 /* Products */,
@@ -82,6 +79,9 @@
 		70C2EB3F1475EF4F00751AE8 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				70C2EB5F1475F07400751AE8 /* AudioToolbox.framework */,
+				70C2EB611475FE4900751AE8 /* MediaPlayer.framework */,
+				70C2EB5D1475F03B00751AE8 /* CoreAudio.framework */,
 				70C2EB401475EF4F00751AE8 /* UIKit.framework */,
 				70C2EB421475EF4F00751AE8 /* Foundation.framework */,
 				70C2EB441475EF4F00751AE8 /* CoreGraphics.framework */,
@@ -142,7 +142,7 @@
 		70C2EB331475EF4F00751AE8 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0460;
+				LastUpgradeCheck = 0510;
 			};
 			buildConfigurationList = 70C2EB361475EF4F00751AE8 /* Build configuration list for PBXProject "VolumeSnap" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -212,8 +212,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -228,11 +229,15 @@
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -241,8 +246,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -250,9 +256,12 @@
 				COPY_PHASE_STRIP = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
@@ -264,6 +273,7 @@
 		70C2EB5B1475EF4F00751AE8 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_OBJC_ARC = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "VolumeSnap/VolumeSnap-Prefix.pch";
 				INFOPLIST_FILE = "VolumeSnap/VolumeSnap-Info.plist";
@@ -275,6 +285,7 @@
 		70C2EB5C1475EF4F00751AE8 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_OBJC_ARC = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "VolumeSnap/VolumeSnap-Prefix.pch";
 				INFOPLIST_FILE = "VolumeSnap/VolumeSnap-Info.plist";
