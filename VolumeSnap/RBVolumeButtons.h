@@ -16,6 +16,7 @@ typedef void (^ButtonBlock)();
 @property (nonatomic, copy) ButtonBlock upBlock;
 @property (nonatomic, copy) ButtonBlock downBlock;
 @property (nonatomic, readonly) float launchVolume;
+@property (nonatomic, readonly, strong) UIView *volumeView;
 
 -(void)startStealingVolumeButtonEvents;
 -(void)stopStealingVolumeButtonEvents;
