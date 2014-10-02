@@ -206,14 +206,17 @@ void volumeListenerCallback (
    
    AudioSessionRemovePropertyListenerWithUserData(kAudioSessionProperty_CurrentHardwareOutputVolume, volumeListenerCallback, (__bridge void *)(self));
    
-   if( self.hadToLowerVolume )
+   if (!self.suspended)
    {
-      [[MPMusicPlayerController applicationMusicPlayer] setVolume:1.0];
-   }
+      if( self.hadToLowerVolume )
+      {
+         [[MPMusicPlayerController applicationMusicPlayer] setVolume:1.0];
+      }
    
-   if( self.hadToRaiseVolume )
-   {
-      [[MPMusicPlayerController applicationMusicPlayer] setVolume:0.0];
+      if( self.hadToRaiseVolume )
+      {
+         [[MPMusicPlayerController applicationMusicPlayer] setVolume:0.0];
+      }
    }
    
    
