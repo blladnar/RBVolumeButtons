@@ -94,6 +94,9 @@ void volumeListenerCallback (
    {
       self.isStealingVolumeButtons = NO;
       self.suspended = NO;
+
+      CGRect frame = CGRectMake(0, -10, 1, 1);
+      self.volumeView = [[MPVolumeView alloc] initWithFrame:frame];
    }
    return self;
 }
@@ -119,13 +122,13 @@ void volumeListenerCallback (
 	
 	AudioSessionSetActive(YES);
 	
-	CGRect frame = CGRectMake(0, -10, 1, 1);
-	self.volumeView = [[MPVolumeView alloc] initWithFrame:frame];
-	[[[[UIApplication sharedApplication] windows] objectAtIndex:0] insertSubview:self.volumeView atIndex:0];
-	
+	if (!self.volumeView.superview) {
+		[[[[UIApplication sharedApplication] windows] objectAtIndex:0] insertSubview:self.volumeView atIndex:0];
+	}
+
 	self.launchVolume = [[MPMusicPlayerController applicationMusicPlayer] volume];
-	BOOL hadToLowerVolume = self.launchVolume == 1.0;
-	BOOL hadToRaiseVolume = self.launchVolume == 0.0;
+	BOOL hadToLowerVolume = self.launchVolume >= 1.0;
+	BOOL hadToRaiseVolume = self.launchVolume <= 0.0;
 	
     // Avoid flashing the volume indicator
     if (hadToLowerVolume || hadToRaiseVolume)
@@ -203,18 +206,19 @@ void volumeListenerCallback (
    
    AudioSessionRemovePropertyListenerWithUserData(kAudioSessionProperty_CurrentHardwareOutputVolume, volumeListenerCallback, (__bridge void *)(self));
    
-   if( self.hadToLowerVolume )
+   if (!self.suspended)
    {
-      [[MPMusicPlayerController applicationMusicPlayer] setVolume:1.0];
+      if( self.hadToLowerVolume )
+      {
+         [[MPMusicPlayerController applicationMusicPlayer] setVolume:1.0];
+      }
+   
+      if( self.hadToRaiseVolume )
+      {
+         [[MPMusicPlayerController applicationMusicPlayer] setVolume:0.0];
+      }
    }
    
-   if( self.hadToRaiseVolume )
-   {
-      [[MPMusicPlayerController applicationMusicPlayer] setVolume:0.0];
-   }
-   
-   [self.volumeView removeFromSuperview];
-   self.volumeView = nil;
    
    AudioSessionSetActive(NO);
    
@@ -223,7 +227,10 @@ void volumeListenerCallback (
 
 -(void)dealloc
 {
-    self.suspended = NO;
+   [self.volumeView removeFromSuperview];
+   self.volumeView = nil;
+
+   self.suspended = NO;
    [self stopStealingVolumeButtonEvents];
     
 }
@@ -234,3 +241,4 @@ void volumeListenerCallback (
 }
 
 @end
+
