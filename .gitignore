@@ -3,3 +3,5 @@ build
 xcuserdata
 VolumeSnap.xcodeproj/project.xcworkspace/contents.xcworkspacedata
 
+
+*.xccheckout
