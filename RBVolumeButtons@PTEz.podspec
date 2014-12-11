@@ -2,7 +2,7 @@
 Pod::Spec.new do |s|
 
   s.name         = "RBVolumeButtons@PTEz"
-  s.version      = "0.1.0"
+  s.version      = "0.1.1"
   s.summary      = "This lets you steal the volume up and volume down buttons on iOS."
   s.homepage     = "https://github.com/PTEz/RBVolumeButtons"
 
