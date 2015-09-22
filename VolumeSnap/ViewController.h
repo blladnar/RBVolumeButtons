@@ -7,20 +7,18 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <MediaPlayer/MediaPlayer.h>
 
 @class RBVolumeButtons;
 
 @interface ViewController : UIViewController
 {
-   float launchVolume;
-   IBOutlet UILabel *counterLabel;
-   int counter;
-   
-   RBVolumeButtons *_buttonStealer;
+    float _launchVolume;
+    IBOutlet UILabel *_counterLabel;
+    int _counter;
 }
 
-@property (retain) RBVolumeButtons *buttonStealer;
+@property (nonatomic, retain) RBVolumeButtons *buttonStealer;
+
 - (IBAction)startStealing:(id)sender;
 - (IBAction)stopStealing:(id)sender;
 
